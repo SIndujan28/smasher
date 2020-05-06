@@ -1,0 +1,19 @@
+version: '3'
+
+services: 
+    db:
+        container_name: postgres-db
+        image: postgres:alpine
+        ports: 
+        - 5432:5432
+        environment: 
+            POSTGRES_USER: ${DATABASE_USER}
+            POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+            POSTGRES_DB: ${DATABASE_DB}
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U postgres"]
+            interval: 10s
+            timeout: 10s
+            retries: 3
+        volumes: 
+        - ./pgsdata:/var/lib/postgresql/data

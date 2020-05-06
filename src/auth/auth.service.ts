@@ -1,8 +1,13 @@
 import { Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
+import { Repository } from 'typeorm'
+import { RegisterDTO, LoginDTO } from 'src/models/user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserEntity } from 'src/entities/user.entity';
 
 @Injectable()
 export class AuthService {
 
+    constructor(@InjectRepository(UserEntity) private userRepo:Repository<UserEntity>) {}
     private mockUser={
         "email": "jake@jake.jake",
         "token": "jwt.token.here",
@@ -12,9 +17,11 @@ export class AuthService {
         "password":"123"
     }
 
-    async register(data:any) {
+    async register(credentials: RegisterDTO) {
         try {
-            if(data.email === this.mockUser.email) {
+            const user= this.userRepo.create(credentials)
+            await user.save();
+            if(credentials.email === this.mockUser.email) {
                 return this.mockUser
             } 
         }catch(e) {
@@ -22,10 +29,10 @@ export class AuthService {
         }
     }
 
-    async login({email,password}: any) {
+    async login({email,password}: LoginDTO) {
         try {
             if(email===this.mockUser.email && password===this.mockUser.password)
-            return true;
+            return "logged In";
         }catch(e) {
             return new UnauthorizedException('Invalid credentials');
         }
