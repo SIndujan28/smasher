@@ -5,7 +5,7 @@ import { Injectable } from '@nestjs/common';
 export class DatabaseConnectionService implements TypeOrmOptionsFactory {
     createTypeOrmOptions(): TypeOrmModuleOptions {
         return {
-            name: 'postgres',
+            name: 'default',
             type: 'postgres',
             host: 'localhost',
             port: 5432,
