@@ -8,10 +8,10 @@ import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
-  //   TypeOrmModule.forRootAsync({
-  //   useClass: DatabaseConnectionService
-  // }),AuthModule,
-   EventsModule],
+    TypeOrmModule.forRootAsync({
+    useClass: DatabaseConnectionService
+  }),
+  AuthModule,
   controllers: [AppController],
   providers: [AppService],
 })

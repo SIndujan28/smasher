@@ -24,14 +24,6 @@ export class UserEntity extends AbstractEntity {
     @Exclude()
     password: string;
 
-    @ManyToMany(type => UserEntity,user => user.followee,)
-    @JoinTable()
-    followers: UserEntity[];
-
-    @ManyToMany(type => UserEntity, user => user.followers,)
-    followee: UserEntity[];
-
-
     @BeforeInsert()
     async hashPassword() {
         this.password= await bcrypt.hash(this.password,10)
