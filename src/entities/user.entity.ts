@@ -1,7 +1,7 @@
 import { AbstractEntity } from "./abstract-entity";
 import { Exclude, classToPlain } from 'class-transformer'
 import { IsEmail } from 'class-validator'
-import { Entity, Column, BeforeInsert, JoinTable, ManyToMany } from "typeorm";
+import { Entity, Column, BeforeInsert} from "typeorm";
 import * as bcrypt from 'bcryptjs'
 
 
