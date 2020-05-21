@@ -1,7 +1,7 @@
-import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody, WsResponse } from '@nestjs/websockets'
+import { WebSocketGateway, WebSocketServer, SubscribeMessage, MessageBody, WsResponse, ConnectedSocket } from '@nestjs/websockets'
 import { from, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 
 @WebSocketGateway(
     {namespace: 'events'}
@@ -16,9 +16,9 @@ export class EventsGateway {
         //     return data;
         // }
 
-    @SubscribeMessage('event')
+    @SubscribeMessage('events')
     findAll(@MessageBody() data: any): Observable<WsResponse<number>> {
-      console.log(data)  
+      console.log(data)
       return from([1, 2, 3]).pipe(map(item => ({ event: 'events', data: item })));
     }
 
@@ -28,4 +28,26 @@ export class EventsGateway {
     return data;
   }
 
+  @SubscribeMessage('game-data')
+  async gameData(@MessageBody() data: any) {
+
+  }
+
+  @SubscribeMessage('join-room')
+  async joinRoom(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
+    client.join(data,(err) => {
+      if(err) {
+        console.log(err)
+      }
+    })
+  }
+
+  @SubscribeMessage('leave-room')
+  async leaveRoom(@MessageBody() data: string, @ConnectedSocket() client: Socket) {
+    client.leave(data,(err) => {
+      if(err) {
+        console.log(err)
+      }
+    })
+  }
 }
