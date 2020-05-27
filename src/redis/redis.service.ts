@@ -6,7 +6,7 @@ import { promisify } from 'util';
 export class RedisService {
 
     private readonly client=createClient({"host":"127.0.0.1","port":6379,"password":"thispassword"});
-    constructor() {}
+    // constructor() {}
 
     public async find():Promise<any> {
         console.log("hu")
@@ -81,7 +81,7 @@ export class RedisService {
         await this.delMember(eventKey)
     }
 
-    async getPendingEventsFor(pendingKey: string, userId: string) {
+    async getPendingEventsFor(pendingKey: string, userId: string) :Promise<any>{
         const eventKeys= await this.sMembers(pendingKey)
         if(!eventKeys) {
             return []
@@ -116,10 +116,10 @@ export class RedisService {
                 }
             } 
         });
-        return events
+        return JSON.stringify(events)
     }
 
-    async getActiveEventsFor(activeKey: string, userId: string) {
+    async getActiveEventsFor(activeKey: string, userId: string) :Promise<any>{
         const eventKeys= await this.sMembers(activeKey )
         if(!eventKeys) {
             return []
@@ -134,7 +134,7 @@ export class RedisService {
                 }
             });
         });
-        return events
+        return JSON.stringify(events)
     }
 
     async joinEvent(eventKey: string, pendingKey: string, activeKey: string, userId: string, userAlias: string, timestamp: number) {
