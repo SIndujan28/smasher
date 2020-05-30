@@ -10,6 +10,8 @@
         socket.emit('identity', 0, response =>
           console.log('Identity:', response),
         );
+        socket.emit('create-game',{"userId":"21312312","userAlias":"dasdsdsad"},response => console.log('idea',response))
+        socket.emit('game-data',{"roomId":"5dd6e94c-2267-4794-9be7-ed4029cb92ca","gameData":"hi im game"},response =>console.log('idea1',response) )
         socket.emit('game-data',{"loc":"dsdfd"})
       });
       socket.on('events', function(data) {
