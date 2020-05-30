@@ -41,9 +41,9 @@ export class MatchmakingService {
                 .then(() => {
                     const timeout=event.capacity * perUserTimeoutSec * 1000
                     setTimeout(function autoCancelEvent() {
-                        this.redisService.cancelEvent(userId, event.id).catch(err => {
-                            console.log(err)
-                        })
+                        // this.redisService.cancelEvent(userId, event.id).catch(err => {
+                        //     console.log(err)
+                        // })
                     }, timeout)
                     return event
                 })

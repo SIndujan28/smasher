@@ -4,6 +4,7 @@ import { RedisModule } from 'src/redis/redis.module';
 
 @Module({
   imports: [RedisModule],
-  providers: [MatchmakingService]
+  providers: [MatchmakingService],
+  exports: [MatchmakingService]
 })
 export class MatchmakingModule {}
