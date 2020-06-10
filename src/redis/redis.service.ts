@@ -15,7 +15,6 @@ export class RedisService {
 
     async addMembers(key: string,...members: Array<string>):Promise<any> {
         const addAsync=promisify(this.client.sadd).bind(this.client)
-        console.log(typeof(addAsync))
         return addAsync(key, ...members)
     }
 
