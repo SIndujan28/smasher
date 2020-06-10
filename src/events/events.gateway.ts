@@ -3,6 +3,7 @@ import { from, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { Server, Socket } from 'socket.io'
 import { MatchmakingService } from 'src/matchmaking/matchmaking.service';
+import { CreateGameDto,AutoJoinGameDto, JoinByIdDto, CancelGameDto, GameDataDto } from './events.dto';
 
 
 @WebSocketGateway(
@@ -26,23 +27,28 @@ export class EventsGateway {
   }
 
    @SubscribeMessage('game-data')
-  async gameData(@MessageBody() {roomId,gameData}: any, @ConnectedSocket() client: Socket) {
+  async gameData(@MessageBody() {roomId,gameData}: GameDataDto, @ConnectedSocket() client: Socket) {
     client.to(roomId).emit(gameData)
     console.log("*"+client.rooms)
   }
 
    @SubscribeMessage('create-game')
-  async createGame(@MessageBody() data: any) {
-    return this.matchMaking.createEvent(data).then((data1) =>{ return data1} ).catch(err => {console.log(err)})
+  async createGame(@MessageBody() createGameDto: CreateGameDto) {
+    return this.matchMaking.createEvent(createGameDto).then((data1) =>{ 
+      return data1
+    } ).catch(err => {console.log(err)})
   }
 
    @SubscribeMessage('autojoin-game')
-  async autoJoin(@MessageBody() data: any) {
-    return this.matchMaking.autojoinEvent(data).then((data1) =>{ return data1} ).catch(err => {console.log(err)})
+  async autoJoin(@MessageBody() autoJoinGameDto: AutoJoinGameDto) {
+    return this.matchMaking.autojoinEvent(autoJoinGameDto).then((data1) =>{ 
+      console.log("isdk"+data1)
+      return data1
+    } ).catch(err => {console.log(err)})
   }
 
    @SubscribeMessage('joinById-game')
-  async joinById(@MessageBody() {userId,userAlias,eventId}: any) {
+  async joinById(@MessageBody() {userId, userAlias, eventId}: JoinByIdDto) {
     return this.matchMaking.joinEvent(userId,userAlias,eventId).then((data1) =>{ return data1} ).catch(err => {console.log(err)})
   }
 
@@ -56,13 +62,16 @@ export class EventsGateway {
   }
 
    @SubscribeMessage('cancel-game')
-  async cancelGame(@MessageBody() {userId,eventId}: any) {
+  async cancelGame(@MessageBody() {userId,eventId}: CancelGameDto) {
     return this.matchMaking.cancelEvent(userId,eventId).then((data1) =>{ return data1} ).catch(err => {console.log(err)})
   }
 
    @SubscribeMessage('game-info')
-  async getGameInfo(@MessageBody() userId: any) {
-    return this.matchMaking.getEventsFor(userId).then((data1) =>{ return data1} ).catch(err => {console.log(err)})
+  async getGameInfo(@MessageBody() userId: string) {
+    return this.matchMaking.getEventsFor(userId).then((data1) =>{ 
+      console.log(data1)
+      return data1
+    } ).catch(err => {console.log(err)})
   }
    @SubscribeMessage('leave-room')
   async leaveRoom(@MessageBody() roomId: string, @ConnectedSocket() client: Socket) {
