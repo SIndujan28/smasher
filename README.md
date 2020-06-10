@@ -14,7 +14,7 @@
 * Provides socket events to autojoin,create and cancel game events for clients.
 
 ## Installation
-1.To run postgres and redis spin the container using,
+1.To run postgres and redis spin the containers using,
 ```bash
 $ docker-compose up -d
 ```
@@ -51,4 +51,4 @@ $ npm run test:cov
 
 ## License
 
-  Nest is [MIT licensed](LICENSE).
+  [MIT licensed](LICENSE).
