@@ -4,6 +4,7 @@ import { map } from 'rxjs/operators'
 import { Server, Socket } from 'socket.io'
 import { MatchmakingService } from 'src/matchmaking/matchmaking.service';
 import { CreateGameDto,AutoJoinGameDto, JoinByIdDto, CancelGameDto, GameDataDto } from './events.dto';
+import { ValidationPipe, UsePipes } from '@nestjs/common';
 
 
 @WebSocketGateway(
@@ -26,19 +27,22 @@ export class EventsGateway {
     return data;
   }
 
+  @UsePipes(new ValidationPipe())
    @SubscribeMessage('game-data')
   async gameData(@MessageBody() {roomId,gameData}: GameDataDto, @ConnectedSocket() client: Socket) {
     client.to(roomId).emit(gameData)
     console.log("*"+client.rooms)
   }
-
+   @UsePipes(new ValidationPipe())
    @SubscribeMessage('create-game')
   async createGame(@MessageBody() createGameDto: CreateGameDto) {
+    console.log(typeof(createGameDto.userId))
     return this.matchMaking.createEvent(createGameDto).then((data1) =>{ 
       return data1
     } ).catch(err => {console.log(err)})
   }
 
+  @UsePipes(new ValidationPipe())
    @SubscribeMessage('autojoin-game')
   async autoJoin(@MessageBody() autoJoinGameDto: AutoJoinGameDto) {
     return this.matchMaking.autojoinEvent(autoJoinGameDto).then((data1) =>{ 
@@ -47,6 +51,7 @@ export class EventsGateway {
     } ).catch(err => {console.log(err)})
   }
 
+  @UsePipes(new ValidationPipe())
    @SubscribeMessage('joinById-game')
   async joinById(@MessageBody() {userId, userAlias, eventId}: JoinByIdDto) {
     return this.matchMaking.joinEvent(userId,userAlias,eventId).then((data1) =>{ return data1} ).catch(err => {console.log(err)})
@@ -61,6 +66,7 @@ export class EventsGateway {
     })
   }
 
+  @UsePipes(new ValidationPipe())
    @SubscribeMessage('cancel-game')
   async cancelGame(@MessageBody() {userId,eventId}: CancelGameDto) {
     return this.matchMaking.cancelEvent(userId,eventId).then((data1) =>{ return data1} ).catch(err => {console.log(err)})
