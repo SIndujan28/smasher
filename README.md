@@ -1,5 +1,5 @@
 # Smasher
-  An authorative game server developed in Typescript using nestjs framework supporting realtime and turn-based multiplayer games.It uses websocket as transport layer to transfer game data between clients.
+An authorative game server developed in Typescript using nestjs framework supporting realtime and turn-based multiplayer games.It uses websocket as transport layer to transfer game data between clients.
 
 ## Stack information
 * Nestjs - Nodejs framework
